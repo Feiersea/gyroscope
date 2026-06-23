@@ -15,11 +15,27 @@ MODULE_DESCRIPTION("MPU-6050 Gyroscope Driver");
 #define I2C_DEVICE "/dev/i2c - 1"
 #define SLAVE_ADDRESS 0x68
 
+
+//Defining the private state structure
 struct mpu6050_data {
-	struct i2c_client *client
+	struct regmap *regmap;
 	int16_t accel_x, accel_y, accel_z;
 	int16_t gyro_x, gyro_y, gyro_z;
 	struct mutex lock;
+};
+
+//Register Definitions
+#define MPU6050_PWR_MGMT_1 0x6B
+#define
+
+//I2C Driver Registration
+static struct i2c_driver mpu_driver = {
+	.driver = {
+		.name = mpu_6050,
+		.of_match_table = mpu_of_ids,
+	},
+	.probe	= mpu_probe,
+	.id_table = mpu_i2c_ids,
 };
 
 int main() {

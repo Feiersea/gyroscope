@@ -31,21 +31,52 @@ struct mpu6050_data {
 #define MPU6050_REG_ACCEL_CONFIG 0x1C /* Configure self test and range for accelerometer */
 #define MPU6050_REG_FIFO_EN	 0x23 /* Enable for the various measurements to be put into the FIFO register */
 #define MPU6050_REG_INT_ENABLE	 0x38 /* For interrupt generation through various methods */
-	#define MPU6050_REG_INT_STATUS	 0x3A /* This shows the status of whether or not there is an interrupt */
+#define MPU6050_REG_INT_STATUS	 0x3A /* This shows the status of whether or not there is an interrupt */
 
 
 /* Data Registers */
+#define MPU6050_REG_ACCEL_XOUT_H	0x3B
+#define MPU6050_REG_TEMP_OUT_H		0x41
+#define MPU6050_REG_GYRO_XOUT_H		0x43
 
 
 /* Power and Identification Management */
+#define MPU6050_REG_USER_CTRL	0x6A
 #define MPU6050_PWR_MGMT_1 	0x6B /* rst, sleep, cycle */
-#define MPU6050_PWR_SLEEP	0x40 //defines the sleep
-#define MPU_PWR_CLKSEL_MASK	0x07 //defines the clearing
-#define MPU6050_CLKSEL_PLL_XGYRO	0x01 //defines the case for x gyro based reference
-
 #define MPU6050_PWR_MGMT_2 	0x6C /* wakectl, standby */
-#
+#define MPU6050_REG_WHO_AM_I	0x75
 
+/* CONFIG Register Bitfields */
+#define MPU6050_CONFIG_DLPF_MASK   0x07  /* Bits [2:0] */
+#define MPU6050_DLPF_260HZ         0x00
+#define MPU6050_DLPF_184HZ         0x01
+#define MPU6050_DLPF_94HZ          0x02
+#define MPU6050_DLPF_42HZ          0x03  /* 1kHz internal Fs */
+
+/* ACCEL_CONFIG Register Bitfields */
+#define MPU6050_ACCEL_FS_MASK      0x18  /* Bits [4:3] */
+#define MPU6050_ACCEL_FS_SHIFT     3
+
+#define MPU6050_ACCEL_FS_2G        (0 << MPU6050_ACCEL_FS_SHIFT)
+#define MPU6050_ACCEL_FS_4G        (1 << MPU6050_ACCEL_FS_SHIFT)
+#define MPU6050_ACCEL_FS_8G        (2 << MPU6050_ACCEL_FS_SHIFT)
+#define MPU6050_ACCEL_FS_16G       (3 << MPU6050_ACCEL_FS_SHIFT)
+
+
+/* PWR_MGMT_1 Bitfields */
+#define MPU6050_PWR1_DEVICE_RESET  0x80  /* Bit 7 */
+#define MPU6050_PWR1_SLEEP         0x40  /* Bit 6 */
+#define MPU6050_PWR1_CLKSEL_MASK   0x07  /* Bits [2:0] */
+
+#define MPU6050_CLKSEL_INTERNAL    0x00
+#define MPU6050_CLKSEL_PLL_XGYRO   0x01
+#define MPU6050_CLKSEL_PLL_YGYRO   0x02
+#define MPU6050_CLKSEL_PLL_ZGYRO   0x03
+
+
+/* Expected Default Values for Verification */
+#define MPU6050_WHO_AM_I_MAGIC     0x68  /* Default value of Register 117 */
+#define MPU6050_PWR1_RESET_VAL     0x40  /* Boots directly into Sleep Mode */
 
 //I2C Driver
 static struct i2c_driver mpu_driver = {
